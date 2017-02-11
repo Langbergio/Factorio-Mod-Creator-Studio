@@ -2,6 +2,8 @@ package de.ralleytn.fmcs;
 
 import java.awt.Desktop;
 import java.awt.Desktop.Action;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -247,5 +249,19 @@ public final class Utils {
 		}
 
 		WebOptionPane.showConfirmDialog(Program.FACTORIO_MOD_CREATOR_STUDIO.getGUI().getFrame(), message, "Error!", WebOptionPane.DEFAULT_OPTION, WebOptionPane.ERROR_MESSAGE);
+	}
+	
+	public static final FileInputStream getFileInputStream(String file) {
+		
+		try {
+			
+			return new FileInputStream(new File(file));
+			
+		} catch(Exception exception) {
+			
+			Utils.handleException(exception);
+		}
+		
+		return null;
 	}
 }

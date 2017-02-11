@@ -1,5 +1,8 @@
 package de.ralleytn.fmcs;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +44,19 @@ public final class Icons {
 				}
 			}
 		}
+	}
+	
+	public static final ImageIcon merge(String source, String target, int x, int y) {
+		
+		Image sourceImage = Icons.get(source).getImage();
+		Image targetImage = Icons.get(target).getImage();
+		BufferedImage newImage = new BufferedImage(targetImage.getWidth(null), targetImage.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = newImage.createGraphics();
+		graphics.drawImage(targetImage, 0, 0, null);
+		graphics.drawImage(sourceImage, x, y, null);
+		graphics.dispose();
+		
+		return new ImageIcon(newImage);
 	}
 	
 	/**

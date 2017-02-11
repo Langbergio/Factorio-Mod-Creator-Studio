@@ -1,10 +1,16 @@
 package de.ralleytn.fmcs;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
+import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,6 +19,9 @@ import org.jsoup.select.Elements;
 import de.ralleytn.fmcs.editor.JavaScriptFMCSTokenMaker;
 import de.ralleytn.fmcs.editor.Language;
 import de.ralleytn.fmcs.editor.Lua52TokenMaker;
+import de.ralleytn.fmcs.editor.LuaFoldParser;
+import de.ralleytn.fmcs.editor.LuaJ2RSyntaxTextArea;
+import de.ralleytn.fmcs.ui.FMCSSplash;
 
 /**
  * Starting point of the program.
@@ -21,6 +30,10 @@ import de.ralleytn.fmcs.editor.Lua52TokenMaker;
  * @since 0.1.0
  */
 public final class Program {
+	
+	public static final FMCSSplash SPLASH = new FMCSSplash();
+	
+	public static final List<BufferedImage> FRAME_ICON = Program._loadFrameIcon();
 
 	/**
 	 * Most recent version of Factorio.
@@ -34,12 +47,14 @@ public final class Program {
 	 */
 	public static final Program FACTORIO_MOD_CREATOR_STUDIO = new Program();
 	
+	public static final SpellingParser SPELL_CHECKER = Program._createEnglishSpellingParser();
+	
 	public static final List<Library> DEFAULT_LIBRARIES = Program._loadDefaultLibraries();
 	
 	public static final Language[] AVAILABLE_LANGUAGES = {
 			
-		new Language("Lua 5.2", "text/lua-5.2", Lua52TokenMaker.class),
-		new Language("JavaScript(FMCS Edition)", "text/js-fmcs", JavaScriptFMCSTokenMaker.class)
+		new Language("Lua 5.2", "Lua", "text/lua-5.2", Lua52TokenMaker.class, new LuaJ2RSyntaxTextArea(), new LuaFoldParser()),
+		new Language("JavaScript(FMCS Edition)", "JavaScript", "text/js-fmcs", JavaScriptFMCSTokenMaker.class, null, new CurlyFoldParser(true, false))
 	};
 	
 	public static final List<String> ALL_MODDABLE_FACTORIO_VERSIONS = Program._fetchModdableFactorioVersions();
@@ -142,6 +157,44 @@ public final class Program {
 		return null;
 	}
 	
+	private static final List<BufferedImage> _loadFrameIcon() {
+		
+		int[] resolutions = {
+				
+			16, 24, 32, 48, 64, 128, 256, 512
+		};
+		
+		List<BufferedImage> icons = new ArrayList<>();
+		
+		for(int index = 0; index < resolutions.length; index++) {
+			
+			try {
+				
+				icons.add(ImageIO.read(Program.class.getClassLoader().getResourceAsStream("icon-" + resolutions[index] + ".png")));
+			
+			} catch(IOException exception) {
+				
+				Utils.handleException(exception);
+			}
+		}
+		
+		return icons;
+	}
+	
+	private static final SpellingParser _createEnglishSpellingParser() {
+		
+		try {
+			
+			return SpellingParser.createEnglishSpellingParser(new File("res/dictionaries/english_dic.zip"), true);
+		
+		} catch(Exception exception) {
+			
+			Utils.handleException(exception);
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Exists the program.
 	 * @since 0.1.0
@@ -168,7 +221,7 @@ public final class Program {
 		
 		for(Language lang : Program.AVAILABLE_LANGUAGES) {
 			
-			if(lang.getName().equals(name)) {
+			if(lang.getLangName().equals(name)) {
 				
 				return lang;
 			}

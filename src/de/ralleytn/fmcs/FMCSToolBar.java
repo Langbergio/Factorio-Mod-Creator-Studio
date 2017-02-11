@@ -8,7 +8,7 @@ import com.alee.laf.separator.WebSeparator;
 
 import de.ralleytn.fmcs.wizards.WizardNewProject;
 
-public class MenuBarButtons extends WebMenuBar {
+public class FMCSToolBar extends WebMenuBar {
 
 	private static final long serialVersionUID = 3286370642576258861L;
 	
@@ -26,7 +26,7 @@ public class MenuBarButtons extends WebMenuBar {
 	private WebButton buttonHelp;
 	private Adapter adapter;
 	
-	public MenuBarButtons() {
+	public FMCSToolBar() {
 		
 		this.adapter = new Adapter(this);
 		
@@ -161,9 +161,9 @@ public class MenuBarButtons extends WebMenuBar {
 		return separator;
 	}
 	
-	private final class Adapter extends AbstractAdapter<MenuBarButtons> {
+	private final class Adapter extends AbstractAdapter<FMCSToolBar> {
 
-		public Adapter(MenuBarButtons motherClassInstance) {
+		public Adapter(FMCSToolBar motherClassInstance) {
 			
 			super(motherClassInstance);
 		}

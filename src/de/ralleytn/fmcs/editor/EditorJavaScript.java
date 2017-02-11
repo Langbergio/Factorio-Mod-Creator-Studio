@@ -8,28 +8,17 @@ import de.ralleytn.fmcs.Program;
 import de.ralleytn.fmcs.Project;
 import de.ralleytn.fmcs.Settings;
 
-public class EditorLua extends RTextScrollPane {
+public class EditorJavaScript extends RTextScrollPane {
 
-	private static final long serialVersionUID = -5710518358876649520L;
+	private static final long serialVersionUID = 4590994466595501456L;
 	
 	private final Project project;
 
-	public EditorLua(Project project) {
+	public EditorJavaScript(Project project) {
 
-		super(EditorLua._createEditor());
+		super(EditorJavaScript._createEditor());
 		
 		this.project = project;
-
-		/*
-		AutoCompletion autoCompletion = new AutoCompletion(this.project.getCompletionProvider());
-		autoCompletion.setDescriptionWindowSize(Settings.getInt("editor.lua.code.completion.desc-window.width"), Settings.getInt("editor.lua.code.completion.desc-window.height"));
-		autoCompletion.setShowDescWindow(Settings.getBoolean("editor.lua.code.completion.show-desc-window"));
-		autoCompletion.setListCellRenderer(new CompletionCellRenderer());
-		autoCompletion.setAutoActivationDelay(Settings.getInt("editor.lua.code.completion.auto-activation-delay"));
-		autoCompletion.setAutoActivationEnabled(Settings.getBoolean("editor.lua.code.completion.auto-activation"));
-		autoCompletion.setAutoCompleteEnabled(Settings.getBoolean("editor.lua.code.completion"));
-		autoCompletion.setAutoCompleteSingleChoices(Settings.getBoolean("editor.lua.code.completion.single-choices"));
-	    autoCompletion.install(this.getTextArea());*/
 	    
 	    this.updateTheme();
 	    this.getTextArea().setFont(Fonts.get("code"));
@@ -42,7 +31,7 @@ public class EditorLua extends RTextScrollPane {
 		
 		for(EditorTheme theme : EditorTheme.values()) {
 			
-			if(theme.toString().equals(Settings.getString("editor.lua.theme"))) {
+			if(theme.toString().equals(Settings.getString("editor.js.theme"))) {
 				
 				theme.getTheme().apply((RSyntaxTextArea)this.getTextArea());
 			}
@@ -57,8 +46,8 @@ public class EditorLua extends RTextScrollPane {
 	private static final RSyntaxTextArea _createEditor() {
 		
 		RSyntaxTextArea editor = new RSyntaxTextArea();
-		editor.setSyntaxEditingStyle(Program.getLanguageByName("Lua").getIdentifier());
-		editor.setCodeFoldingEnabled(Settings.getBoolean("editor.lua.code.folding"));
+		editor.setSyntaxEditingStyle(Program.getLanguageByName("JavaScript").getIdentifier());
+		editor.setCodeFoldingEnabled(Settings.getBoolean("editor.js.code.folding"));
 		editor.setAnimateBracketMatching(true);
 		editor.setAntiAliasingEnabled(true);
 		editor.setAutoIndentEnabled(true);
@@ -74,9 +63,6 @@ public class EditorLua extends RTextScrollPane {
 		editor.setRoundedSelectionEdges(true);
 		editor.addParser(Program.SPELL_CHECKER);
 		editor.addParser(Program.getLanguageByName("Lua").getParser());
-		
-		LuaFoldParser foldParser = (LuaFoldParser)Program.getLanguageByName("Lua").getFoldParser();
-		foldParser.setFoldComments(Settings.getBoolean("editor.lua.code.folding.fold-comment"));
 
 	    return editor;
 	}

@@ -12,11 +12,6 @@ public class LuaFoldParser implements FoldParser {
 
 	private boolean foldComments;
 	
-	public LuaFoldParser(boolean foldComments) {
-		
-		this.foldComments = foldComments;
-	}
-	
 	public void setFoldComments(boolean foldComments) {
 		
 		this.foldComments = foldComments;

@@ -17,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 
 import com.alee.extended.layout.FormLayout;
@@ -124,6 +125,7 @@ public class WizardNewProject extends AbstractWizard {
 			this.fieldTargetGameVersion = new WebSpinner(new SpinnerListModel(Program.ALL_MODDABLE_FACTORIO_VERSIONS));
 			this.fieldTargetGameVersion.setValue(Program.CURRENT_FACTORIO_VERSION);
 			this.fieldTargetGameVersion.setPreferredSize(new Dimension(195, 32));
+			this.fieldTargetGameVersion.addChangeListener(this.adapter);
 			
 			WebPanel panelTargetGameVersion = new WebPanel();
 			panelTargetGameVersion.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -167,6 +169,7 @@ public class WizardNewProject extends AbstractWizard {
 				
 				this.fieldLanguage[index] = new WebRadioButton(Program.AVAILABLE_LANGUAGES[index].getName(), index == 0);
 				this.fieldLanguage[index].addActionListener(this.adapter);
+				this.fieldLanguage[index].setName(Program.AVAILABLE_LANGUAGES[index].getLangName());
 				panelLanguage.add(this.fieldLanguage[index]);
 			}
 			
@@ -190,6 +193,17 @@ public class WizardNewProject extends AbstractWizard {
 				String projectName = this.getMotherClassInstance().fieldProjectName.getText();
 				this.getMotherClassInstance().fieldModTitle.setText(projectName);
 				this.getMotherClassInstance().fieldModName.setText(Utils.replaceInvalidCharacters(projectName));
+			}
+			
+			@Override
+			public void stateChanged(ChangeEvent event) {
+				
+				Object source = event.getSource();
+				
+				if(source == this.getMotherClassInstance().fieldTargetGameVersion) {
+					
+					WizardNewProject.this.page4.dependencyBase.setMinimumVersion(this.getMotherClassInstance().fieldTargetGameVersion.getValue().toString());
+				}
 			}
 			
 			@Override
@@ -367,19 +381,25 @@ public class WizardNewProject extends AbstractWizard {
 		private DefaultListModel<Dependency> listModel;
 		private WebCheckBox fieldDependsOnBase;
 		private Dependency dependencyBase;
+		private Adapter adapter;
 
 		public Page4() {
 			
+			this.adapter = new Adapter(this);
+			
 			this.buttonAdd = new FMCSButton("Add");
 			this.buttonAdd.setPreferredWidth(100);
+			this.buttonAdd.addActionListener(this.adapter);
 			
 			this.buttonEdit = new FMCSButton("Edit");
 			this.buttonEdit.setPreferredWidth(100);
 			this.buttonEdit.setEnabled(false);
+			this.buttonEdit.addActionListener(this.adapter);
 			
 			this.buttonRemove = new FMCSButton("Remove");
 			this.buttonRemove.setPreferredWidth(100);
 			this.buttonRemove.setEnabled(false);
+			this.buttonRemove.addActionListener(this.adapter);
 			
 			WebPanel panelButtons = new WebPanel();
 			panelButtons.setLayout(new VerticalFlowLayout(VerticalFlowLayout.TOP));
@@ -389,6 +409,7 @@ public class WizardNewProject extends AbstractWizard {
 			
 			this.listDependencies = new JList<Dependency>((this.listModel = new DefaultListModel<>()));
 			this.listDependencies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			this.listDependencies.addListSelectionListener(this.adapter);
 			this.listDependencies.setCellRenderer(new DefaultListCellRenderer() {
 
 				private static final long serialVersionUID = 8155777173599152487L;
@@ -401,6 +422,8 @@ public class WizardNewProject extends AbstractWizard {
 			});
 			
 			this.fieldDependsOnBase = new WebCheckBox("Depends on \"base\" mod", true);
+			this.fieldDependsOnBase.addActionListener(this.adapter);
+			
 			this.listModel.addElement((this.dependencyBase = new Dependency("base", true, WizardNewProject.this.page1.fieldTargetGameVersion.getValue().toString())));
 			
 			WebPanel panelDependencies = new WebPanel();
@@ -420,6 +443,41 @@ public class WizardNewProject extends AbstractWizard {
 			public Adapter(Page4 motherClassInstance) {
 				
 				super(motherClassInstance);
+			}
+			
+			@Override
+			public void valueChanged(ListSelectionEvent event) {
+				
+				boolean editable = this.getMotherClassInstance().listDependencies.getSelectedValue() != null && this.getMotherClassInstance().listDependencies.getSelectedValue() != this.getMotherClassInstance().dependencyBase;
+				this.getMotherClassInstance().buttonRemove.setEnabled(editable);
+				this.getMotherClassInstance().buttonEdit.setEnabled(editable);
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				
+				Object source = event.getSource();
+				
+				if(source == this.getMotherClassInstance().buttonAdd) {
+					
+					
+				} else if(source == this.getMotherClassInstance().buttonEdit) {
+					
+					
+				} else if(source == this.getMotherClassInstance().buttonRemove) {
+					
+					
+				} else if(source == this.getMotherClassInstance().fieldDependsOnBase) {
+					
+					if(this.getMotherClassInstance().fieldDependsOnBase.isSelected()) {
+						
+						this.getMotherClassInstance().listModel.addElement(this.getMotherClassInstance().dependencyBase);
+						
+					} else {
+						
+						this.getMotherClassInstance().listModel.removeElement(this.getMotherClassInstance().dependencyBase);
+					}
+				}
 			}
 		}
 	}

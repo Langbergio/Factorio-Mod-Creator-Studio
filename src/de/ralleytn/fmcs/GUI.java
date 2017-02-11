@@ -3,20 +3,18 @@ package de.ralleytn.fmcs;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 
+import de.ralleytn.fmcs.editor.EditorJavaScript;
+import de.ralleytn.fmcs.editor.EditorLua;
+import de.ralleytn.fmcs.ui.FMCSFrameMenus;
 import de.ralleytn.fmcs.ui.FMCSTabbedPane;
 import de.ralleytn.fmcs.ui.FMCSTree;
+import de.ralleytn.fmcs.ui.FMCSToolBar;
 
 public class GUI {
 
@@ -26,8 +24,8 @@ public class GUI {
 	private WebPanel mainContentPanel;
 	private WebSplitPane splitPane;
 	private FMCSTree projectsTree;
-	private MenuBarMenus frameMenuBar;
-	private MenuBarButtons buttonMenuBar;
+	private FMCSFrameMenus frameMenus;
+	private FMCSToolBar buttonMenuBar;
 	private FMCSTabbedPane editorTabs;
 	private Adapter adapter;
 	
@@ -46,6 +44,8 @@ public class GUI {
 		this.projectsPanel.add(new WebScrollPane(this.projectsTree), BorderLayout.CENTER);
 		
 		this.editorTabs = new FMCSTabbedPane();
+		this.editorTabs.addTab("Lua Editor Test", Icons.get("code"), new EditorLua(null));
+		this.editorTabs.addTab("JavaScript Editor Test", Icons.get("code"), new EditorJavaScript(null));
 		
 		this.mainContentPanel = new WebPanel();
 		this.mainContentPanel.setLayout(new BorderLayout());
@@ -56,17 +56,17 @@ public class GUI {
 		this.splitPane.setRightComponent(this.mainContentPanel);
 		this.splitPane.setOneTouchExpandable(true);
 		
-		this.buttonMenuBar = new MenuBarButtons();
+		this.buttonMenuBar = new FMCSToolBar();
 		
 		this.contentPane = new WebPanel();
 		this.contentPane.setLayout(new BorderLayout());
 		this.contentPane.add(this.buttonMenuBar, BorderLayout.NORTH);
 		this.contentPane.add(this.splitPane, BorderLayout.CENTER);
 		
-		this.frameMenuBar = new MenuBarMenus();
+		this.frameMenus = new FMCSFrameMenus();
 		
 		this.frame = new WebFrame("Factorio Mod Creator Studio");
-		this.frame.setJMenuBar(this.frameMenuBar);
+		this.frame.setJMenuBar(this.frameMenus);
 		this.frame.setSize(Settings.getInt("window.width"), Settings.getInt("window.height"));
 		this.frame.setMinimumSize(new Dimension(800, 600));
 		this.frame.setLocationRelativeTo(null);
@@ -74,7 +74,7 @@ public class GUI {
 		this.frame.setDefaultCloseOperation(WebFrame.DO_NOTHING_ON_CLOSE);
 		this.frame.addWindowListener(this.adapter);
 		this.frame.setExtendedState(Settings.getInt("window.state"));
-		this.frame.setIconImages(this._loadFrameIcon());
+		this.frame.setIconImages(Program.FRAME_ICON);
 		this.frame.setVisible(true);
 		
 		this.projectsTree.reload();
@@ -83,41 +83,9 @@ public class GUI {
 			
 			this.projectsTree.setSelectedNode(Projects.getFirstProject().getTreeNode());
 		}
-	}
-	
-	public WebPanel getProjectsPanel() {
 		
-		return this.projectsPanel;
-	}
-	
-	public WebPanel getMainContentPanel() {
-		
-		return this.mainContentPanel;
-	}
-	
-	public WebSplitPane getSplitPane() {
-		
-		return this.splitPane;
-	}
-	
-	public MenuBarMenus getFrameMenuBar() {
-		
-		return this.frameMenuBar;
-	}
-	
-	public MenuBarButtons getButtonMenuBar() {
-		
-		return this.buttonMenuBar;
-	}
-	
-	public FMCSTabbedPane getEditorTabs() {
-		
-		return this.editorTabs;
-	}
-	
-	public WebPanel getContentPane() {
-		
-		return this.contentPane;
+		Program.SPLASH.dispose();
+		this.frame.setVisible(true);
 	}
 	
 	public FMCSTree getProjectsTree() {
@@ -128,30 +96,6 @@ public class GUI {
 	public WebFrame getFrame() {
 		
 		return this.frame;
-	}
-	
-	private List<BufferedImage> _loadFrameIcon() {
-		
-		int[] resolutions = {
-				
-			16, 24, 32, 48, 64, 128, 256, 512
-		};
-		
-		List<BufferedImage> icons = new ArrayList<>();
-		
-		for(int index = 0; index < resolutions.length; index++) {
-			
-			try {
-				
-				icons.add(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("icon-" + resolutions[index] + ".png")));
-			
-			} catch(IOException exception) {
-				
-				Utils.handleException(exception);
-			}
-		}
-		
-		return icons;
 	}
 	
 	private final class Adapter extends AbstractAdapter<GUI> {
