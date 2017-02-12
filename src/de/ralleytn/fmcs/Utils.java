@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import com.alee.laf.optionpane.WebOptionPane;
+import javax.swing.JOptionPane;
+
 import com.alee.laf.spinner.WebSpinner;
 
 /**
@@ -28,6 +29,12 @@ public final class Utils {
 		Utils.system = System.getProperty("java.vendor").toLowerCase().contains("android") ? OperatingSystem.ANDROID : (Utils.osName.toLowerCase().contains("win") ? OperatingSystem.WINDOWS : (Utils.osName.toLowerCase().contains("mac") ? OperatingSystem.MAC_OS_X : (Utils.osName.toLowerCase().contains("nix") || Utils.osName.toLowerCase().contains("nux") ? OperatingSystem.LINUX : (Utils.osName.toLowerCase().contains("sunos") ? OperatingSystem.SOLARIS : OperatingSystem.UNKNOWN))));
 	}
 	
+	/**
+	 * 
+	 * @param version
+	 * @return
+	 * @since 0.1.0
+	 */
 	public static final int[] getVersion(String version) {
 		
 		String[] splitted = version.split("\\.");
@@ -41,6 +48,106 @@ public final class Utils {
 		return array;
 	}
 	
+	/**
+	 * 
+	 * @param language
+	 * @param code
+	 * @return
+	 * @since 0.1.0
+	 */
+	public static final String removeComments(Language language, String code) {
+		
+		char[] tokens = code.toCharArray();
+		int length = tokens.length;
+		boolean inBlockComment = false;
+		boolean inLineComment = false;
+		
+		for(int index = 0; index < length; index++) {
+			
+			int cLeft = length - index;
+			
+			if(language.equals(Language.LUA)) {
+				
+				if(cLeft > 3) {
+					
+					if(!inLineComment &&
+					   tokens[index] == '-' &&
+					   tokens[index + 1] == '-' &&
+					   tokens[index + 2] == '[' &&
+					   tokens[index + 3] == '[') {
+						
+						inBlockComment = true;
+					}
+
+					if(!inLineComment &&
+					   tokens[index] == ']' &&
+					   tokens[index + 1] == ']' &&
+					   tokens[index + 2] == '-' &&
+					   tokens[index + 3] == '-') {
+						
+						tokens[index] = '\0';
+						tokens[index + 1] = '\0';
+						tokens[index + 2] = '\0';
+						tokens[index + 3] = '\0';
+						inBlockComment = false;
+					}
+				}
+				
+				if(cLeft >= 2) {
+					
+					if(!inBlockComment &&
+					   tokens[index] == '-' &&
+					   tokens[index + 1] == '-') {
+						
+						inLineComment = true;
+					}
+				}
+				
+				if(inLineComment && tokens[index] == '\n') {
+					
+					inLineComment = false;
+				}
+				
+				if(inLineComment || inBlockComment) {
+					
+					tokens[index] = '\0';
+				}
+			}
+		}
+		
+		String str = new String(tokens);
+		StringBuilder builder = new StringBuilder();
+		
+		for(String line : str.split("\n")) {
+			
+			boolean wasHiddenCompletely = true;
+			
+			for(char c : line.toCharArray()) {
+				
+				if(c != '\0') {
+					
+					wasHiddenCompletely = false;
+					break;
+				}
+			}
+			
+			if(wasHiddenCompletely) {
+				
+				line = "\n";
+			}
+			
+			builder.append(line.replace("\0", "")).append('\n');
+		}
+		
+		return builder.toString();
+	}
+	
+	/**
+	 * 
+	 * @param spinners
+	 * @return
+	 * @since 0.1.0
+	 */
 	public static final String getVersion(WebSpinner[] spinners) {
 		
 		StringBuilder builder = new StringBuilder();
@@ -246,11 +353,20 @@ public final class Utils {
 			}
 			
 			message.append('\n');
+			cause = exception.getCause();
 		}
 
-		WebOptionPane.showConfirmDialog(Program.FACTORIO_MOD_CREATOR_STUDIO.getGUI().getFrame(), message, "Error!", WebOptionPane.DEFAULT_OPTION, WebOptionPane.ERROR_MESSAGE);
+		// FIXME
+		// For some reason this part of the code is reached but never executed correctly.
+		JOptionPane.showConfirmDialog(null, message, "Error!", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * 
+	 * @param file
+	 * @return
+	 * @since 0.1.0
+	 */
 	public static final FileInputStream getFileInputStream(String file) {
 		
 		try {

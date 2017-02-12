@@ -4,9 +4,11 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import de.ralleytn.fmcs.Fonts;
+import de.ralleytn.fmcs.Language;
 import de.ralleytn.fmcs.Program;
 import de.ralleytn.fmcs.Project;
 import de.ralleytn.fmcs.Settings;
+import de.ralleytn.fmcs.editor.parser.FoldParserLua;
 
 public class EditorLua extends RTextScrollPane {
 
@@ -40,7 +42,7 @@ public class EditorLua extends RTextScrollPane {
 	
 	public final void updateTheme() {
 		
-		for(EditorTheme theme : EditorTheme.values()) {
+		for(Theme theme : Theme.values()) {
 			
 			if(theme.toString().equals(Settings.getString("editor.lua.theme"))) {
 				
@@ -57,7 +59,7 @@ public class EditorLua extends RTextScrollPane {
 	private static final RSyntaxTextArea _createEditor() {
 		
 		RSyntaxTextArea editor = new RSyntaxTextArea();
-		editor.setSyntaxEditingStyle(Program.getLanguageByName("Lua").getIdentifier());
+		editor.setSyntaxEditingStyle(Language.LUA.getIdentifier());
 		editor.setCodeFoldingEnabled(Settings.getBoolean("editor.lua.code.folding"));
 		editor.setAnimateBracketMatching(true);
 		editor.setAntiAliasingEnabled(true);
@@ -73,9 +75,9 @@ public class EditorLua extends RTextScrollPane {
 		editor.setHyperlinksEnabled(true);
 		editor.setRoundedSelectionEdges(true);
 		editor.addParser(Program.SPELL_CHECKER);
-		editor.addParser(Program.getLanguageByName("Lua").getParser());
+		//editor.addParser(Program.getLanguageByName("Lua").getParser());
 		
-		LuaFoldParser foldParser = (LuaFoldParser)Program.getLanguageByName("Lua").getFoldParser();
+		FoldParserLua foldParser = (FoldParserLua)Language.LUA.getFoldParser();
 		foldParser.setFoldComments(Settings.getBoolean("editor.lua.code.folding.fold-comment"));
 
 	    return editor;

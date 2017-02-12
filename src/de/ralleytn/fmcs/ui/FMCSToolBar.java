@@ -8,10 +8,15 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
 import com.alee.laf.button.WebButton;
+import com.alee.laf.label.WebLabel;
 import com.alee.laf.menu.WebMenuBar;
+import com.alee.laf.text.WebTextField;
+import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 
 import de.ralleytn.fmcs.Icons;
+import de.ralleytn.fmcs.dialog.DialogWizardSelection;
+import de.ralleytn.fmcs.wizard.WizardNewProject;
 
 public class FMCSToolBar extends WebMenuBar {
 
@@ -24,17 +29,23 @@ public class FMCSToolBar extends WebMenuBar {
 	private ToolBarNewAndSave toolbarNewAndSave;
 	private ToolBarImportExport toolbarImportExport;
 	private ToolBarUndoRedo toolbarUndoRedo;
+	private ToolBarEdit toolbarEdit;
+	private ToolBarQuickSearch toolbarQucikSearch;
 
 	public FMCSToolBar() {
 		
 		this.toolbarNewAndSave = new ToolBarNewAndSave();
 		this.toolbarImportExport = new ToolBarImportExport();
 		this.toolbarUndoRedo = new ToolBarUndoRedo();
+		this.toolbarEdit = new ToolBarEdit();
+		this.toolbarQucikSearch = new ToolBarQuickSearch();
 		
 		this.setLayout(new FlowLayout(FlowLayout.LEFT)); // fixed the detaching bug
 		this.add(this.toolbarNewAndSave);
 		this.add(this.toolbarImportExport);
 		this.add(this.toolbarUndoRedo);
+		this.add(this.toolbarEdit);
+		this.add(this.toolbarQucikSearch);
 	}
 	
 	public class ToolBarNewAndSave extends WebToolBar {
@@ -55,7 +66,7 @@ public class FMCSToolBar extends WebMenuBar {
 				@Override
 				public void actionPerformed(ActionEvent event) {
 					
-					
+					new DialogWizardSelection(new WizardNewProject());
 				}
 			});
 			this.buttonNew.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control N"), "openWizardSelection");
@@ -67,6 +78,7 @@ public class FMCSToolBar extends WebMenuBar {
 			this.add(this.buttonNew);
 			this.add(this.buttonSave);
 			this.add(this.buttonSaveAll);
+			this.setToolbarStyle(ToolbarStyle.attached);
 		}
 	}
 	
@@ -85,6 +97,7 @@ public class FMCSToolBar extends WebMenuBar {
 			
 			this.add(this.buttonImport);
 			this.add(this.buttonExport);
+			this.setToolbarStyle(ToolbarStyle.attached);
 		}
 	}
 	
@@ -103,6 +116,56 @@ public class FMCSToolBar extends WebMenuBar {
 			
 			this.add(this.buttonUndo);
 			this.add(this.buttonRedo);
+			this.setToolbarStyle(ToolbarStyle.attached);
+		}
+	}
+	
+	public class ToolBarEdit extends WebToolBar {
+
+		private static final long serialVersionUID = 3704616688789406228L;
+		
+		private WebButton buttonCopy;
+		private WebButton buttonPaste;
+		private WebButton buttonCut;
+		private WebButton buttonDelete;
+		
+		public ToolBarEdit() {
+			
+			this.buttonCopy = new WebButton(Icons.get("copy"));
+			
+			this.buttonPaste = new WebButton(Icons.get("paste"));
+			
+			this.buttonCut = new WebButton(Icons.get("cut"));
+			
+			this.buttonDelete = new WebButton(Icons.get("delete"));
+			
+			this.add(this.buttonCopy);
+			this.add(this.buttonPaste);
+			this.add(this.buttonCut);
+			this.add(this.buttonDelete);
+			this.setToolbarStyle(ToolbarStyle.attached);
+		}
+	}
+	
+	public class ToolBarQuickSearch extends WebToolBar {
+
+		private static final long serialVersionUID = -6529794681284872056L;
+		
+		private WebButton buttonSearch;
+		private WebTextField fieldSearchText;
+		
+		public ToolBarQuickSearch() {
+			
+			this.buttonSearch = new WebButton(Icons.get("search"));
+			
+			this.fieldSearchText = new WebTextField();
+			this.fieldSearchText.setPreferredWidth(230);
+			
+			this.add(new WebLabel("Quick Search: "));
+			this.add(this.fieldSearchText);
+			this.add(this.buttonSearch);
+			this.setToolbarStyle(ToolbarStyle.attached);
+			this.setSpacing(0);
 		}
 	}
 }

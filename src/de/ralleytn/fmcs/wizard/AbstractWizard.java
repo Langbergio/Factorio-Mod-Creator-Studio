@@ -1,4 +1,4 @@
-package de.ralleytn.fmcs.wizards;
+package de.ralleytn.fmcs.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -82,7 +82,12 @@ public abstract class AbstractWizard extends WebDialog {
 		
 		this._resetButtons();
 	}
-
+	
+	public WebLabel createLabel() {
+		
+		return new WebLabel(this.getName(), this.getIcon());
+	}
+	
 	public abstract void onFinish();
 	
 	@Override

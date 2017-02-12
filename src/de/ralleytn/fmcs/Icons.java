@@ -46,6 +46,15 @@ public final class Icons {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param source
+	 * @param target
+	 * @param x
+	 * @param y
+	 * @return
+	 * @since 0.1.0
+	 */
 	public static final ImageIcon merge(String source, String target, int x, int y) {
 		
 		Image sourceImage = Icons.get(source).getImage();

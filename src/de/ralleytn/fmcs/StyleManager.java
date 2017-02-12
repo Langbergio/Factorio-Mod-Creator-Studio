@@ -13,9 +13,9 @@ import com.alee.laf.WebLookAndFeel;
  * @version 0.1.0
  * @since 0.1.0
  */
-public final class Style {
+public final class StyleManager {
 
-	private Style() {} // prevents instantiation of this class
+	private StyleManager() {} // prevents instantiation of this class
 	
 	private static boolean LOADED;
 	
@@ -32,15 +32,14 @@ public final class Style {
 	    	
 	    	Object key = keys.nextElement();
 	    	Object value = UIManager.get(key);
-
 	    	
 	    	if(value != null && value instanceof FontUIResource) {
 	    		
 	    		UIManager.put(key, Fonts.get("default"));
 	    	}
 	    }
-	    
-		Style.LOADED = true;
+
+		StyleManager.LOADED = true;
 	}
 	
 	/**
@@ -49,6 +48,6 @@ public final class Style {
 	 */
 	public static final boolean isLoaded() {
 		
-		return Style.LOADED;
+		return StyleManager.LOADED;
 	}
 }

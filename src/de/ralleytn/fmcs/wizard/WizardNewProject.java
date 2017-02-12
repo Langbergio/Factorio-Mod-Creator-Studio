@@ -1,4 +1,4 @@
-package de.ralleytn.fmcs.wizards;
+package de.ralleytn.fmcs.wizard;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -33,11 +33,13 @@ import com.alee.laf.text.WebTextField;
 
 import de.ralleytn.fmcs.Dependency;
 import de.ralleytn.fmcs.Icons;
+import de.ralleytn.fmcs.Language;
 import de.ralleytn.fmcs.AbstractAdapter;
 import de.ralleytn.fmcs.Library;
+import de.ralleytn.fmcs.ModInfo;
 import de.ralleytn.fmcs.Program;
 import de.ralleytn.fmcs.Utils;
-import de.ralleytn.fmcs.dialogs.FileChooserAddLibrary;
+import de.ralleytn.fmcs.dialog.FileChooserAddLibrary;
 import de.ralleytn.fmcs.ui.FMCSButton;
 
 public class WizardNewProject extends AbstractWizard {
@@ -58,17 +60,22 @@ public class WizardNewProject extends AbstractWizard {
 		this.page3 = new Page3();
 		this.page4 = new Page4();
 		
-		
 		this.setPages(this.page1, this.page2, this.page3, this.page4);
 		this.getButtonFinish().bindTo(this.page1.fieldModName, this.page1.fieldModTitle, this.page1.fieldProjectName, this.page1.fieldAuthor);
 		this.setSize(this.getWidth(), this.getHeight() + 15);
-		this.setVisible(true);
 	}
 
 	@Override
 	public void onFinish() {
 		
-		
+		ModInfo info = new ModInfo();
+		info.setContact(this.page1.fieldContact.getText());
+		info.setDescription(this.page2.fieldDescription.getText());
+		info.setHomepage(this.page1.fieldHomepage.getText());
+		info.setName(this.page1.fieldModName.getText());
+		info.setTargetGameVersion(this.page1.fieldTargetGameVersion.getValue().toString());
+		info.setTitle(this.page1.fieldModTitle.getText());
+		info.setVersion(Utils.getVersion(this.page1.fieldModVersion));
 	}
 
 	private class Page1 extends WebPanel {
@@ -163,13 +170,13 @@ public class WizardNewProject extends AbstractWizard {
 			panelLanguage.setLayout(new VerticalFlowLayout(VerticalFlowLayout.TOP));
 			panelLanguage.setBorder(BorderFactory.createTitledBorder("Project Language"));
 			
-			this.fieldLanguage = new WebRadioButton[Program.AVAILABLE_LANGUAGES.length];
+			this.fieldLanguage = new WebRadioButton[Language.values().length];
 			
 			for(int index = 0; index < this.fieldLanguage.length; index++) {
 				
-				this.fieldLanguage[index] = new WebRadioButton(Program.AVAILABLE_LANGUAGES[index].getName(), index == 0);
+				this.fieldLanguage[index] = new WebRadioButton(Language.values()[index].getName(), index == 0);
 				this.fieldLanguage[index].addActionListener(this.adapter);
-				this.fieldLanguage[index].setName(Program.AVAILABLE_LANGUAGES[index].getLangName());
+				this.fieldLanguage[index].setName(Language.values()[index].getLangName());
 				panelLanguage.add(this.fieldLanguage[index]);
 			}
 			

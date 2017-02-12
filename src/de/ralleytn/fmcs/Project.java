@@ -12,8 +12,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import de.ralleytn.fmcs.ui.FMCSMutableTreeNode;
-import de.ralleytn.fmcs.ui.FMCSTree;
+import de.ralleytn.fmcs.ui.FMCSMutableProjectsTreeNode;
+import de.ralleytn.fmcs.ui.FMCSProjectsTree;
 
 /**
  * Represents a single project.
@@ -24,21 +24,23 @@ import de.ralleytn.fmcs.ui.FMCSTree;
 public class Project {
 
 	private File file;
-	private FMCSMutableTreeNode projectNode;
+	private FMCSMutableProjectsTreeNode projectNode;
 	private JSONObject json;
 	private DefaultCompletionProvider completionProvider;
 	
 	/**
 	 * Constructor used for new projects.
 	 * @param name Name of the project
+	 * @param projectLanguage
 	 * @param projectFile
 	 * @since 0.1.0
 	 */
 	@SuppressWarnings("unchecked")
-	public Project(String name, File projectFile) {
+	public Project(String name, String projectLanguage, File projectFile) {
 
 		this.json = new JSONObject();
 		this.json.put("project_name", name);
+		this.json.put("project_language", projectLanguage);
 		
 		this.file = projectFile;
 		
@@ -92,28 +94,32 @@ public class Project {
 	 */
 	public void attachToTree() {
 		
-		FMCSTree projectsTree = Program.FACTORIO_MOD_CREATOR_STUDIO.getGUI().getProjectsTree();
-		FMCSMutableTreeNode rootNode = projectsTree.getRootNode();
-		FMCSMutableTreeNode[] projectChildNodes = {
+		FMCSProjectsTree projectsTree = Program.FACTORIO_MOD_CREATOR_STUDIO.getGUI().getProjectsTree();
+		FMCSMutableProjectsTreeNode rootNode = projectsTree.getRootNode();
+		FMCSMutableProjectsTreeNode[] projectChildNodes = {
 				
-			new FMCSMutableTreeNode("Mod Info", false, "document"),
-			new FMCSMutableTreeNode("Script", false, "code"),
-			new FMCSMutableTreeNode("Custom Libraries", true, "folder"),
-			new FMCSMutableTreeNode("Graphics", true, "folder"),
-			new FMCSMutableTreeNode("Items", true, "folder"),
-			new FMCSMutableTreeNode("Recipes", true, "folder"),
-			new FMCSMutableTreeNode("Entities", true, "folder"),
-			new FMCSMutableTreeNode("Categories", true, "folder"),
-			new FMCSMutableTreeNode("Fluids", true, "folder"),
-			new FMCSMutableTreeNode("Technologies", true, "folder"),
-			new FMCSMutableTreeNode("Equipment", true, "folder"),
-			new FMCSMutableTreeNode("Signals", true, "folder"),
-			new FMCSMutableTreeNode("Tiles", true, "folder")
+			new FMCSMutableProjectsTreeNode("Mod Info", false, "document"),
+			new FMCSMutableProjectsTreeNode("Script", true, "code"),
+			new FMCSMutableProjectsTreeNode("Custom Libraries", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Dependencies", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Graphics", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Items", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Recipes", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Entities", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Categories", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Fluids", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Technologies", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Equipment", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Signals", true, "folder"),
+			new FMCSMutableProjectsTreeNode("Tiles", true, "folder")
 		};
-
-		this.projectNode = new FMCSMutableTreeNode("" + this.json.get("project_name"), true, "project");
 		
-		for(FMCSMutableTreeNode node : projectChildNodes) {
+		projectChildNodes[1].add(new FMCSMutableProjectsTreeNode("data", false, "code"));
+		projectChildNodes[1].add(new FMCSMutableProjectsTreeNode("control", false, "code"));
+
+		this.projectNode = new FMCSMutableProjectsTreeNode("" + this.json.get("project_name"), true, "project");
+		
+		for(FMCSMutableProjectsTreeNode node : projectChildNodes) {
 			
 			this.projectNode.add(node);
 		}
@@ -128,7 +134,7 @@ public class Project {
 	 */
 	public void detachFromTree() {
 		
-		FMCSTree projectsTree = Program.FACTORIO_MOD_CREATOR_STUDIO.getGUI().getProjectsTree();
+		FMCSProjectsTree projectsTree = Program.FACTORIO_MOD_CREATOR_STUDIO.getGUI().getProjectsTree();
 		projectsTree.removeSelectionPath(projectsTree.getPathForNode(this.projectNode));
 		projectsTree.reload();
 	}
@@ -183,11 +189,16 @@ public class Project {
 	 * @return The node of this project in the projects tree
 	 * @since 0.1.0
 	 */
-	public FMCSMutableTreeNode getTreeNode() {
+	public FMCSMutableProjectsTreeNode getTreeNode() {
 		
 		return this.projectNode;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
 	public DefaultCompletionProvider getCompletionProvider() {
 		
 		return this.completionProvider;

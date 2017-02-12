@@ -8,7 +8,7 @@
  * This library is distributed under a modified BSD license.  See the included
  * RSyntaxTextArea.License.txt file for details.
  */
-package de.ralleytn.fmcs.editor;
+package de.ralleytn.fmcs.editor.tokenmaker;
 
 import java.io.*;
 import javax.swing.text.Segment;
@@ -58,7 +58,7 @@ import org.fife.ui.rsyntaxtextarea.*;
  * @version 0.9
  */
 
-public class JavaScriptFMCSTokenMaker extends AbstractJFlexCTokenMaker {
+public class TokenMakerJavaScriptFMCS extends AbstractJFlexCTokenMaker {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -1015,7 +1015,7 @@ public class JavaScriptFMCSTokenMaker extends AbstractJFlexCTokenMaker {
 	 * Constructor.  This must be here because JFlex does not generate a
 	 * no-parameter constructor.
 	 */
-	public JavaScriptFMCSTokenMaker() {
+	public TokenMakerJavaScriptFMCS() {
 		super();
 	}
 
@@ -1351,7 +1351,7 @@ public class JavaScriptFMCSTokenMaker extends AbstractJFlexCTokenMaker {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public JavaScriptFMCSTokenMaker(java.io.Reader in) {
+  public TokenMakerJavaScriptFMCS(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -1361,7 +1361,7 @@ public class JavaScriptFMCSTokenMaker extends AbstractJFlexCTokenMaker {
    *
    * @param   in  the java.io.Inputstream to read input from.
    */
-  public JavaScriptFMCSTokenMaker(java.io.InputStream in) {
+  public TokenMakerJavaScriptFMCS(java.io.InputStream in) {
     this(new java.io.InputStreamReader(in));
   }
 

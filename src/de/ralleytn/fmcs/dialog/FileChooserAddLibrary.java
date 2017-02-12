@@ -1,4 +1,4 @@
-package de.ralleytn.fmcs.dialogs;
+package de.ralleytn.fmcs.dialog;
 
 import java.awt.Component;
 import java.io.File;
@@ -12,12 +12,24 @@ import com.alee.laf.filechooser.WebFileChooser;
 import de.ralleytn.fmcs.Icons;
 import de.ralleytn.fmcs.Library;
 
+/**
+ * 
+ * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 public class FileChooserAddLibrary extends WebFileChooser {
 
 	private static final long serialVersionUID = -5452190277420811349L;
 	
 	private Component parent;
 
+	/**
+	 * 
+	 * @param parent
+	 * @param libraries
+	 * @since 0.1.0
+	 */
 	public FileChooserAddLibrary(Component parent, List<Library> libraries) {
 		
 		super(new File(System.getProperty("user.home")));
@@ -34,6 +46,11 @@ public class FileChooserAddLibrary extends WebFileChooser {
 		this.setFileFilter(filter);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
 	public List<Library> getLibraries() {
 
 		List<Library> libraries = new ArrayList<>();
@@ -49,10 +66,21 @@ public class FileChooserAddLibrary extends WebFileChooser {
 		return libraries;
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	private final class Filter extends FileFilter {
 		
 		private List<String> libraryNames;
 		
+		/**
+		 * 
+		 * @param libraries
+		 * @since 0.1.0
+		 */
 		public Filter(List<Library> libraries) {
 			
 			this.libraryNames = new ArrayList<>();

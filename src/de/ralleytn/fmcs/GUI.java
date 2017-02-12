@@ -13,9 +13,15 @@ import de.ralleytn.fmcs.editor.EditorJavaScript;
 import de.ralleytn.fmcs.editor.EditorLua;
 import de.ralleytn.fmcs.ui.FMCSFrameMenus;
 import de.ralleytn.fmcs.ui.FMCSTabbedPane;
-import de.ralleytn.fmcs.ui.FMCSTree;
+import de.ralleytn.fmcs.ui.FMCSProjectsTree;
 import de.ralleytn.fmcs.ui.FMCSToolBar;
 
+/**
+ * 
+ * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 public class GUI {
 
 	private WebFrame frame;
@@ -23,19 +29,27 @@ public class GUI {
 	private WebPanel projectsPanel;
 	private WebPanel mainContentPanel;
 	private WebSplitPane splitPane;
-	private FMCSTree projectsTree;
+	private FMCSProjectsTree projectsTree;
 	private FMCSFrameMenus frameMenus;
 	private FMCSToolBar buttonMenuBar;
 	private FMCSTabbedPane editorTabs;
 	private Adapter adapter;
 	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	public GUI() {
 		
 		this.adapter = new Adapter(this);
 		
-		this.projectsTree = new FMCSTree();
+		this.projectsTree = new FMCSProjectsTree();
 	}
 	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	public void create() {
 		
 		this.projectsPanel = new WebPanel();
@@ -88,18 +102,39 @@ public class GUI {
 		this.frame.setVisible(true);
 	}
 	
-	public FMCSTree getProjectsTree() {
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
+	public FMCSProjectsTree getProjectsTree() {
 		
 		return this.projectsTree;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
 	public WebFrame getFrame() {
 		
 		return this.frame;
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	private final class Adapter extends AbstractAdapter<GUI> {
 
+		/**
+		 * 
+		 * @param motherClassInstance
+		 * @since 0.1.0
+		 */
 		public Adapter(GUI motherClassInstance) {
 			
 			super(motherClassInstance);

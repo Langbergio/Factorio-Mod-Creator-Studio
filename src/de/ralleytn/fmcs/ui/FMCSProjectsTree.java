@@ -10,15 +10,15 @@ import com.alee.laf.tree.WebTree;
 
 import de.ralleytn.fmcs.Icons;
 
-public class FMCSTree extends WebTree<FMCSMutableTreeNode> {
+public class FMCSProjectsTree extends WebTree<FMCSMutableProjectsTreeNode> {
 
 	private static final long serialVersionUID = -2096893885105817461L;
 	
 	private DefaultTreeModel model;
 
-	public FMCSTree() {
+	public FMCSProjectsTree() {
 
-		this.setModel((this.model = new DefaultTreeModel(new FMCSMutableTreeNode("Projects", true, "projects"))));
+		this.setModel((this.model = new DefaultTreeModel(new FMCSMutableProjectsTreeNode("Projects", true, "projects"))));
 		this.setCellRenderer(new CellRenderer());
 	}
 	
@@ -35,7 +35,7 @@ public class FMCSTree extends WebTree<FMCSMutableTreeNode> {
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 			
 			Component comp = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-			this.setIcon(Icons.get(((FMCSMutableTreeNode)value).getIconName()));
+			this.setIcon(Icons.get(((FMCSMutableProjectsTreeNode)value).getIconName()));
 			
 			return comp;
 		}

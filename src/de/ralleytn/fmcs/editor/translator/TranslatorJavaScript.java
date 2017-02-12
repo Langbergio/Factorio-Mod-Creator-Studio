@@ -1,4 +1,4 @@
-package de.ralleytn.fmcs.editor;
+package de.ralleytn.fmcs.editor.translator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,7 @@ import java.util.Stack;
 
 import de.ralleytn.fmcs.Utils;
 
-public final class Js2Lua {
+public final class TranslatorJavaScript {
 
 	public static final void translate(Reader reader, Writer writer) {
 		

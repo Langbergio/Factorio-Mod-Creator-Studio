@@ -1,4 +1,4 @@
-package de.ralleytn.fmcs.editor;
+package de.ralleytn.fmcs.editor.parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.fife.ui.rsyntaxtextarea.folding.Fold;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldType;
 
-public class LuaFoldParser implements FoldParser {
+public class FoldParserLua implements FoldParser {
 
 	private boolean foldComments;
 	
@@ -66,21 +66,21 @@ public class LuaFoldParser implements FoldParser {
 						
 						inBlockComment = false;
 					}
+				}
+				
+				if(charactersLeft >= 2) {
 					
-					if(charactersLeft >= 2) {
+					if(!inBlockComment &&
+					   tokens[index] == '-' &&
+					   tokens[index + 1] == '-') {
 						
-						if(!inBlockComment &&
-						   tokens[index] == '-' &&
-						   tokens[index + 1] == '-') {
-							
-							inLineComment = true;
-						}
+						inLineComment = true;
 					}
+				}
+				
+				if(inLineComment && tokens[index] == '\n') {
 					
-					if(inLineComment && tokens[index] == '\n') {
-						
-						inLineComment = false;
-					}
+					inLineComment = false;
 				}
 			}
 			

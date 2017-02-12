@@ -9,18 +9,12 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.spell.SpellingParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import de.ralleytn.fmcs.editor.JavaScriptFMCSTokenMaker;
-import de.ralleytn.fmcs.editor.Language;
-import de.ralleytn.fmcs.editor.Lua52TokenMaker;
-import de.ralleytn.fmcs.editor.LuaFoldParser;
-import de.ralleytn.fmcs.editor.LuaJ2RSyntaxTextArea;
 import de.ralleytn.fmcs.ui.FMCSSplash;
 
 /**
@@ -31,8 +25,16 @@ import de.ralleytn.fmcs.ui.FMCSSplash;
  */
 public final class Program {
 	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	public static final FMCSSplash SPLASH = new FMCSSplash();
 	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	public static final List<BufferedImage> FRAME_ICON = Program._loadFrameIcon();
 
 	/**
@@ -47,33 +49,49 @@ public final class Program {
 	 */
 	public static final Program FACTORIO_MOD_CREATOR_STUDIO = new Program();
 	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	public static final SpellingParser SPELL_CHECKER = Program._createEnglishSpellingParser();
 	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	public static final List<Library> DEFAULT_LIBRARIES = Program._loadDefaultLibraries();
 	
-	public static final Language[] AVAILABLE_LANGUAGES = {
-			
-		new Language("Lua 5.2", "Lua", "text/lua-5.2", Lua52TokenMaker.class, new LuaJ2RSyntaxTextArea(), new LuaFoldParser()),
-		new Language("JavaScript(FMCS Edition)", "JavaScript", "text/js-fmcs", JavaScriptFMCSTokenMaker.class, null, new CurlyFoldParser(true, false))
-	};
-	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	public static final List<String> ALL_MODDABLE_FACTORIO_VERSIONS = Program._fetchModdableFactorioVersions();
 	
 	private GUI gui;
 	
-	private Program() {}
+	private Program() {} // prevents instantiation of this class
 	
+	/**
+	 * 
+	 * @param args
+	 * @since 0.1.0
+	 */
 	public static void main(String[] args) {
 
 		Fonts.load();
-		Style.load();
 		Icons.load();
+		StyleManager.load();
 		Settings.load();
 		Program.FACTORIO_MOD_CREATOR_STUDIO.gui = new GUI();
 		Projects.loadRegister();
 		Program.FACTORIO_MOD_CREATOR_STUDIO.gui.create();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
 	private static final List<Library> _loadDefaultLibraries() {
 		
 		File directory = new File("default-libs");
@@ -90,6 +108,11 @@ public final class Program {
 		return libraries;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
 	private static final List<String> _fetchModdableFactorioVersions() {
 		
 		List<String> versions = new ArrayList<>();
@@ -157,6 +180,11 @@ public final class Program {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
 	private static final List<BufferedImage> _loadFrameIcon() {
 		
 		int[] resolutions = {
@@ -181,6 +209,11 @@ public final class Program {
 		return icons;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
 	private static final SpellingParser _createEnglishSpellingParser() {
 		
 		try {
@@ -215,18 +248,5 @@ public final class Program {
 	public GUI getGUI() {
 		
 		return this.gui;
-	}
-	
-	public static final Language getLanguageByName(String name) {
-		
-		for(Language lang : Program.AVAILABLE_LANGUAGES) {
-			
-			if(lang.getLangName().equals(name)) {
-				
-				return lang;
-			}
-		}
-		
-		return null;
 	}
 }

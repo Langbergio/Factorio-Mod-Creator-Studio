@@ -1,4 +1,4 @@
-package de.ralleytn.fmcs.dialogs;
+package de.ralleytn.fmcs.dialog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,6 +47,11 @@ public class DialogAbout extends WebDialog {
 		}
 	}
 
+	/**
+	 * 
+	 * @param owner
+	 * @since 0.1.0
+	 */
 	public DialogAbout(WebFrame owner) {
 		
 		super(owner);

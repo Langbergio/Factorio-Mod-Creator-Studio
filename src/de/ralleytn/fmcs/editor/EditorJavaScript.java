@@ -4,6 +4,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import de.ralleytn.fmcs.Fonts;
+import de.ralleytn.fmcs.Language;
 import de.ralleytn.fmcs.Program;
 import de.ralleytn.fmcs.Project;
 import de.ralleytn.fmcs.Settings;
@@ -29,7 +30,7 @@ public class EditorJavaScript extends RTextScrollPane {
 	
 	public final void updateTheme() {
 		
-		for(EditorTheme theme : EditorTheme.values()) {
+		for(Theme theme : Theme.values()) {
 			
 			if(theme.toString().equals(Settings.getString("editor.js.theme"))) {
 				
@@ -46,7 +47,7 @@ public class EditorJavaScript extends RTextScrollPane {
 	private static final RSyntaxTextArea _createEditor() {
 		
 		RSyntaxTextArea editor = new RSyntaxTextArea();
-		editor.setSyntaxEditingStyle(Program.getLanguageByName("JavaScript").getIdentifier());
+		editor.setSyntaxEditingStyle(Language.JAVASCRIPT.getIdentifier());
 		editor.setCodeFoldingEnabled(Settings.getBoolean("editor.js.code.folding"));
 		editor.setAnimateBracketMatching(true);
 		editor.setAntiAliasingEnabled(true);
@@ -62,7 +63,7 @@ public class EditorJavaScript extends RTextScrollPane {
 		editor.setHyperlinksEnabled(true);
 		editor.setRoundedSelectionEdges(true);
 		editor.addParser(Program.SPELL_CHECKER);
-		editor.addParser(Program.getLanguageByName("Lua").getParser());
+		//editor.addParser(Language.JAVASCRIPT.getParser());
 
 	    return editor;
 	}

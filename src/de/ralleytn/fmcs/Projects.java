@@ -19,8 +19,22 @@ import org.json.simple.parser.JSONParser;
  */
 public final class Projects {
 
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	private static final List<Project> PROJECTS = new ArrayList<>();
+	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	private static final File DIRECTORY = new File("projects");
+	
+	/**
+	 * 
+	 * @since 0.1.0
+	 */
 	private static final File REGISTER = new File("projects/register.json");
 	
 	static {

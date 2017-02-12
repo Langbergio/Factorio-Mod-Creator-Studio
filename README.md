@@ -10,7 +10,8 @@ The idea behind the Factorio Mod Creator Studio(FMCS) is to make it as easy as p
 - [Icons (UI)](https://icons8.com/)
 
 ###Libraries
-- [WebLAF](https://github.com/mgarin/weblaf)
+- [WebLaF](https://github.com/mgarin/weblaf)
 - [JSON Simple](https://github.com/fangyidong/json-simple)
 - [RSyntaxTextArea](https://github.com/bobbylight/RSyntaxTextArea)
 - [AutoComplete](https://github.com/bobbylight/AutoComplete)
+- [SpellChecker](https://github.com/bobbylight/SpellChecker)
