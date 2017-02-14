@@ -2,6 +2,8 @@ package de.ralleytn.fmcs;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,6 +17,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import de.ralleytn.fmcs.editor.translator.TranslatorJavaScript;
 import de.ralleytn.fmcs.ui.FMCSSplash;
 
 /**
@@ -85,6 +88,14 @@ public final class Program {
 		Program.FACTORIO_MOD_CREATOR_STUDIO.gui = new GUI();
 		Projects.loadRegister();
 		Program.FACTORIO_MOD_CREATOR_STUDIO.gui.create();
+		
+		
+		try {
+			TranslatorJavaScript.translate(new FileReader(new File("js")), new FileWriter(new File("lua")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -101,7 +112,7 @@ public final class Program {
 			
 			for(File zip : directory.listFiles((dir, name) -> name.toUpperCase().endsWith(".ZIP"))) {
 				
-				libraries.add(new Library(zip));
+				libraries.add(new Library(zip, null));
 			}
 		}
 		

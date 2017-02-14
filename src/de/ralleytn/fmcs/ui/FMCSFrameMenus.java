@@ -19,6 +19,12 @@ import de.ralleytn.fmcs.dialog.DialogAbout;
 import de.ralleytn.fmcs.dialog.DialogSettings;
 import de.ralleytn.fmcs.wizard.WizardNewProject;
 
+/**
+ * 
+ * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 public final class FMCSFrameMenus extends WebMenuBar {
 
 	private static final long serialVersionUID = -2879916824679086885L;
@@ -46,6 +52,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 		this.add(this.menuHelp);
 	}
 
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class MenuFile extends WebMenu {
 
 		private static final long serialVersionUID = -3822607403946820200L;
@@ -137,6 +149,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 			this.add(this.itemExit);
 		}
 		
+		/**
+		 * 
+		 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+		 * @version 0.1.0
+		 * @since 0.1.0
+		 */
 		private final class Adapter extends AbstractAdapter<MenuFile> {
 
 			public Adapter(MenuFile motherClassInstance) {
@@ -163,6 +181,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 			}
 		}
 		
+		/**
+		 * 
+		 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+		 * @version 0.1.0
+		 * @since 0.1.0
+		 */
 		public class MenuNew extends WebMenu {
 
 			private static final long serialVersionUID = -3722717715198536251L;
@@ -242,6 +266,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 				this.add(this.itemTile);
 			}
 			
+			/**
+			 * 
+			 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+			 * @version 0.1.0
+			 * @since 0.1.0
+			 */
 			private class Adapter extends AbstractAdapter<MenuNew> {
 
 				public Adapter(MenuNew motherClassInstance) {
@@ -294,6 +324,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class MenuEdit extends WebMenu {
 
 		private static final long serialVersionUID = 702426690150239706L;
@@ -304,6 +340,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class MenuSource extends WebMenu {
 
 		private static final long serialVersionUID = -8820835528550578621L;
@@ -345,6 +387,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class MenuHelp extends WebMenu {
 
 		private static final long serialVersionUID = -3866771881161961005L;
@@ -380,6 +428,12 @@ public final class FMCSFrameMenus extends WebMenuBar {
 			this.add(this.itemAbout);
 		}
 		
+		/**
+		 * 
+		 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+		 * @version 0.1.0
+		 * @since 0.1.0
+		 */
 		private class Adapter extends AbstractAdapter<MenuHelp> {
 
 			public Adapter(MenuHelp motherClassInstance) {

@@ -26,6 +26,8 @@ public class EditorJavaScript extends RTextScrollPane {
 	    this.setIconRowHeaderEnabled(true);
 	    this.setLineNumbersEnabled(true);
 	    this.getGutter().setBookmarkingEnabled(true);
+	    this.getVerticalScrollBar().setUnitIncrement(20);
+	    this.getHorizontalScrollBar().setUnitIncrement(20);
 	}
 	
 	public final void updateTheme() {

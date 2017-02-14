@@ -7,6 +7,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Enumeration;
+import java.util.function.Function;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javax.swing.JOptionPane;
 
@@ -27,6 +34,49 @@ public final class Utils {
 		
 		Utils.osName = System.getProperty("os.name");
 		Utils.system = System.getProperty("java.vendor").toLowerCase().contains("android") ? OperatingSystem.ANDROID : (Utils.osName.toLowerCase().contains("win") ? OperatingSystem.WINDOWS : (Utils.osName.toLowerCase().contains("mac") ? OperatingSystem.MAC_OS_X : (Utils.osName.toLowerCase().contains("nix") || Utils.osName.toLowerCase().contains("nux") ? OperatingSystem.LINUX : (Utils.osName.toLowerCase().contains("sunos") ? OperatingSystem.SOLARIS : OperatingSystem.UNKNOWN))));
+	}
+	
+	/**
+	 * 
+	 * @param zip
+	 * @param function
+	 * @return
+	 * @since 0.1.0
+	 */
+	public static final ZipEntry getZipEntry(File zip, Function<ZipEntry, Boolean> function) {
+		
+		try(ZipFile zipFile = new ZipFile(zip)) {
+			
+			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
+			
+			while(enumeration.hasMoreElements()) {
+
+				ZipEntry entry = enumeration.nextElement();
+				
+				if(function.apply(entry)) {
+					
+					return entry;
+				}
+			}
+			
+		} catch(IOException exception) {
+			
+			Utils.handleException(exception);
+		}
+		
+		return null;
+	}
+	
+	public static final void copy(String source, String target) {
+		
+		try {
+			
+			Files.copy(Paths.get(source), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
+		
+		} catch(IOException exception) {
+			
+			exception.printStackTrace();
+		}
 	}
 	
 	/**

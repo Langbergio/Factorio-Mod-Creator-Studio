@@ -18,6 +18,7 @@ public final class TranslatorJavaScript {
 			boolean inBlockComment = false;
 			boolean inLineComment = false;
 			boolean inString = false;
+			boolean searchForWhile = false;
 			Stack<String> codeBlock = new Stack<>();
 			char stringStarter = '"';
 			
@@ -44,6 +45,7 @@ public final class TranslatorJavaScript {
 							tokens = _insert(tokens, '[', index + 2);
 							tokens = _insert(tokens, '[', index + 3);
 							inBlockComment = true;
+							length = tokens.length;
 							
 						} else if(!inLineComment && inBlockComment &&
 						   tokens[index] == '*' &&
@@ -54,6 +56,7 @@ public final class TranslatorJavaScript {
 							tokens = _insert(tokens, '-', index + 2);
 							tokens = _insert(tokens, '-', index + 3);
 							inBlockComment = false;
+							length = tokens.length;
 						}
 						
 						if(charactersLeft >= 2 && !inBlockComment &&
@@ -100,6 +103,30 @@ public final class TranslatorJavaScript {
 								tokens[index + 2] = '\0';
 								tokens[index] = '~';
 							}
+							
+							if(tokens[index] == 'f' && tokens[index + 1] == 'o' && tokens[index + 2] == 'r') {
+								
+								codeBlock.push("for");
+							}
+							
+							if(tokens[index] == 'v' && tokens[index + 1] == 'a' && tokens[index + 2] == 'r') {
+										
+								if(codeBlock.size() > 0) {
+											
+									tokens[index] = 'l';
+									tokens[index + 1] = 'o';
+									tokens[index + 2] = 'c';
+									tokens = _insert(tokens, 'a', index + 3);
+									tokens = _insert(tokens, 'l', index + 4);
+									length = tokens.length;
+													
+								} else {
+											
+									tokens[index] = '\0';
+									tokens[index + 1] = '\0';
+									tokens[index + 2] = '\0';
+								}
+							}
 						}
 						
 						if(charactersLeft >= 2) {
@@ -109,6 +136,7 @@ public final class TranslatorJavaScript {
 								tokens[index] = 'a';
 								tokens[index + 1] = 'n';
 								tokens = _insert(tokens, 'd', index + 2);
+								length = tokens.length;
 							
 							} else if(tokens[index] == '!' && tokens[index + 1] == '=') {
 								
@@ -127,35 +155,13 @@ public final class TranslatorJavaScript {
 								tokens = _insert(tokens, 'e', index + 3);
 								tokens = _insert(tokens, 'a', index + 4);
 								tokens = _insert(tokens, 't', index + 5);
+								length = tokens.length;
 								codeBlock.push("repeat");
 							}
 							
 							if(tokens[index] == 'i' && tokens[index + 1] == 'f') {
 								
 								codeBlock.push("if");
-							}
-						}
-						
-						if(charactersLeft >= 3) {
-							
-							if(tokens[index] == 'v' &&
-							   tokens[index + 1] == 'a' &&
-							   tokens[index + 2] == 'r') {
-								
-								if(codeBlock.size() > 0) {
-									
-									tokens[index] = 'l';
-									tokens[index + 1] = 'o';
-									tokens[index + 2] = 'c';
-									tokens = _insert(tokens, 'a', index + 3);
-									tokens = _insert(tokens, 'l', index + 4);
-											
-								} else {
-									
-									tokens[index] = '\0';
-									tokens[index + 1] = '\0';
-									tokens[index + 2] = '\0';
-								}
 							}
 						}
 						
@@ -170,6 +176,26 @@ public final class TranslatorJavaScript {
 								tokens[index + 1] = 'i';
 								tokens[index + 2] = 'l';
 								tokens[index + 3] = '\0';
+							}
+						}
+						
+						if(charactersLeft >= 5) {
+							
+							if(tokens[index] == 'w' && tokens[index + 1] == 'h' && tokens[index + 2] == 'i' && tokens[index + 3] == 'l' && tokens[index + 4] == 'e') {
+								
+								if(searchForWhile) {
+									
+									tokens[index] = 'u';
+									tokens[index + 1] = 'n';
+									tokens[index + 2] = 't';
+									tokens[index + 3] = 'i';
+									tokens[index + 4] = 'l';
+									searchForWhile = false;
+									
+								} else {
+									
+									codeBlock.push("while");
+								}
 							}
 						}
 						
@@ -211,19 +237,41 @@ public final class TranslatorJavaScript {
 							}
 						}
 						
-						if(charactersLeft >= 1 && tokens[index] == '}') {
+						if(charactersLeft >= 1) {
 							
-							String block = codeBlock.pop();
-							
-							if(block.equals("function")) {
+							if(tokens[index] == '}') {
 								
-								tokens[index] = 'e';
-								tokens = _insert(tokens, 'n', index + 1);
-								tokens = _insert(tokens, 'd', index + 2);
+								String block = codeBlock.pop();
 								
-							} else if(block.equals("repeat")) {
+								if(block.equals("function")) {
+									
+									tokens[index] = 'e';
+									tokens = _insert(tokens, 'n', index + 1);
+									tokens = _insert(tokens, 'd', index + 2);
+									length = tokens.length;
+									
+								} else if(block.equals("repeat")) {
+									
+									tokens[index] = '\0';
+									searchForWhile = true;
+								}
 								
+							} else if(tokens[index] == '{') {
 								
+								String block = codeBlock.peek();
+								
+								if(block.equals("function") || block.equals("repeat")) {
+									
+									tokens[index] = '\0';
+									
+								} else if(block.equals("if")) {
+									
+									tokens[index] = 't';
+									tokens = _insert(tokens, 'h', index + 1);
+									tokens = _insert(tokens, 'e', index + 2);
+									tokens = _insert(tokens, 'n', index + 3);
+									length = tokens.length;
+								}
 							}
 						}
 					}

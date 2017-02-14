@@ -136,7 +136,6 @@ public final class Projects {
 					
 					Project project = new Project();
 					project.load(projectFile);
-					project.attachToTree();
 					
 					Projects.addProject(project);
 				}
@@ -170,7 +169,7 @@ public final class Projects {
 		
 		for(Project project : Projects.PROJECTS) {
 
-			array.add(project.getProjectFile().getAbsolutePath());
+			array.add(project.getProjectFile().getPath());
 		}
 		
 		try(PrintWriter writer = new PrintWriter(Projects.REGISTER)) {

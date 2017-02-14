@@ -23,27 +23,29 @@ public enum Language {
 	 * 
 	 * @since 0.1.0
 	 */
-	LUA("Lua 5.2", "Lua", "text/lua-5.2", TokenMakerLua_5_2.class, null, new FoldParserLua()),
+	LUA("Lua 5.2", "Lua", "text/lua-5.2", TokenMakerLua_5_2.class, null, new FoldParserLua(), "lua"),
 	
 	/**
 	 * 
 	 * @since 0.1.0
 	 */
-	JAVASCRIPT("JavaScript(FMCS Edition)", "JavaScript", "text/js-fmcs", TokenMakerJavaScriptFMCS.class, null, new CurlyFoldParser(true, false));
+	JAVASCRIPT("JavaScript(FMCS Edition)", "JavaScript", "text/js-fmcs", TokenMakerJavaScriptFMCS.class, null, new CurlyFoldParser(true, false), "js");
 	
 	private final String name;
 	private final String identifier;
 	private final Class<?> parser;
 	private final FoldParser foldParser;
 	private final String langName;
+	private final String fileEnding;
 	
-	private Language(String name, String langName, String identifier, Class<?> tokenMaker, Class<?> parser, FoldParser foldParser) {
+	private Language(String name, String langName, String identifier, Class<?> tokenMaker, Class<?> parser, FoldParser foldParser, String fileEnding) {
 		
 		this.name = name;
 		this.identifier = identifier;
 		this.parser = parser;
 		this.langName = langName;
 		this.foldParser = foldParser;
+		this.fileEnding = fileEnding;
 		
 		AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
 		atmf.putMapping(identifier, tokenMaker.getName());
@@ -111,5 +113,15 @@ public enum Language {
 	public String getLangName() {
 		
 		return this.langName;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @since 0.1.0
+	 */
+	public String getFileEnding() {
+		
+		return this.fileEnding;
 	}
 }

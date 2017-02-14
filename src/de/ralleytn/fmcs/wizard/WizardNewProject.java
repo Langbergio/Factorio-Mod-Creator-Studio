@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,10 @@ import de.ralleytn.fmcs.AbstractAdapter;
 import de.ralleytn.fmcs.Library;
 import de.ralleytn.fmcs.ModInfo;
 import de.ralleytn.fmcs.Program;
+import de.ralleytn.fmcs.Project;
+import de.ralleytn.fmcs.Projects;
 import de.ralleytn.fmcs.Utils;
+import de.ralleytn.fmcs.dialog.DialogDependency;
 import de.ralleytn.fmcs.dialog.FileChooserAddLibrary;
 import de.ralleytn.fmcs.ui.FMCSButton;
 
@@ -76,6 +80,40 @@ public class WizardNewProject extends AbstractWizard {
 		info.setTargetGameVersion(this.page1.fieldTargetGameVersion.getValue().toString());
 		info.setTitle(this.page1.fieldModTitle.getText());
 		info.setVersion(Utils.getVersion(this.page1.fieldModVersion));
+		info.setDependencies(this.page4.getDependencies());
+		
+		Language language = null;
+		
+		for(WebRadioButton radioButton : this.page1.fieldLanguage) {
+			
+			if(radioButton.isSelected()) {
+				
+				for(Language lang : Language.values()) {
+					
+					if(lang.getLangName().equals(radioButton.getName())) {
+						
+						language = lang;
+						break;
+					}
+				}
+				
+				break;
+			}
+		}
+		
+		Project project = new Project(this.page1.fieldProjectName.getText(), language, new File("projects/" + this.page1.fieldModName.getText() + "/project.json"));
+		project.save();
+		project.attachToTree();
+		project.setInfo(info);
+		
+		for(Library library : this.page3.getLibraries()) {
+			
+			project.addLibrary(library, true);
+		}
+		
+		Projects.addProject(project);
+		Projects.saveRegister();
+		project.save();
 	}
 
 	private class Page1 extends WebPanel {
@@ -445,6 +483,18 @@ public class WizardNewProject extends AbstractWizard {
 			this.add(panelDependencies, BorderLayout.CENTER);
 		}
 		
+		public List<Dependency> getDependencies() {
+			
+			List<Dependency> dependencies = new ArrayList<>();
+			
+			for(int index = 0; index < this.listModel.size(); index++) {
+				
+				dependencies.add(this.listModel.getElementAt(index));
+			}
+			
+			return dependencies;
+		}
+		
 		private final class Adapter extends AbstractAdapter<Page4> {
 
 			public Adapter(Page4 motherClassInstance) {
@@ -467,6 +517,7 @@ public class WizardNewProject extends AbstractWizard {
 				
 				if(source == this.getMotherClassInstance().buttonAdd) {
 					
+					new DialogDependency(this.getMotherClassInstance().getDependencies());
 					
 				} else if(source == this.getMotherClassInstance().buttonEdit) {
 					

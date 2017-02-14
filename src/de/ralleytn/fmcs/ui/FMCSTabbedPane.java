@@ -50,5 +50,6 @@ public class FMCSTabbedPane extends WebTabbedPane {
 		panel.add(buttonClose, constraints);
 		
 		this.setTabComponentAt(index, panel);
+		this.setSelectedIndex(index);
 	}
 }

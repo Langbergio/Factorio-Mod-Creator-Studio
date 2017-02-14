@@ -52,10 +52,14 @@ public class GUI {
 	 */
 	public void create() {
 		
+		WebScrollPane scrollPane = new WebScrollPane(this.projectsTree);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
+		
 		this.projectsPanel = new WebPanel();
 		this.projectsPanel.setPreferredWidth(300);
 		this.projectsPanel.setLayout(new BorderLayout());
-		this.projectsPanel.add(new WebScrollPane(this.projectsTree), BorderLayout.CENTER);
+		this.projectsPanel.add(scrollPane, BorderLayout.CENTER);
 		
 		this.editorTabs = new FMCSTabbedPane();
 		this.editorTabs.addTab("Lua Editor Test", Icons.get("code"), new EditorLua(null));
@@ -100,6 +104,11 @@ public class GUI {
 		
 		Program.SPLASH.dispose();
 		this.frame.setVisible(true);
+	}
+	
+	public FMCSTabbedPane getEditorTabs() {
+		
+		return this.editorTabs;
 	}
 	
 	/**

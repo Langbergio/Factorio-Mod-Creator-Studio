@@ -59,7 +59,7 @@ public class FileChooserAddLibrary extends WebFileChooser {
 			
 			for(File file : this.getSelectedFiles()) {
 				
-				libraries.add(new Library(file));
+				libraries.add(new Library(file, null));
 			}
 		}
 		

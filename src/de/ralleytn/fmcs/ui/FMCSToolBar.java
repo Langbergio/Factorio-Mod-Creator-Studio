@@ -14,10 +14,17 @@ import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
 
+import de.ralleytn.fmcs.AbstractAdapter;
 import de.ralleytn.fmcs.Icons;
 import de.ralleytn.fmcs.dialog.DialogWizardSelection;
 import de.ralleytn.fmcs.wizard.WizardNewProject;
 
+/**
+ * 
+ * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+ * @version 0.1.0
+ * @since 0.1.0
+ */
 public class FMCSToolBar extends WebMenuBar {
 
 	// FIXED -- setting the layout to FlowLayout fixed it somehow.
@@ -48,6 +55,12 @@ public class FMCSToolBar extends WebMenuBar {
 		this.add(this.toolbarQucikSearch);
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class ToolBarNewAndSave extends WebToolBar {
 
 		private static final long serialVersionUID = -6959396910696277873L;
@@ -55,9 +68,12 @@ public class FMCSToolBar extends WebMenuBar {
 		private WebButton buttonNew;
 		private WebButton buttonSave;
 		private WebButton buttonSaveAll;
+		private Adapter adapter;
 		
 		public ToolBarNewAndSave() {
 
+			this.adapter = new Adapter(this);
+			
 			this.buttonNew = new WebButton(Icons.get("new"));
 			this.buttonNew.getActionMap().put("openWizardSelection", new AbstractAction() {
 
@@ -69,6 +85,7 @@ public class FMCSToolBar extends WebMenuBar {
 					new DialogWizardSelection(new WizardNewProject());
 				}
 			});
+			this.buttonNew.addActionListener(this.adapter);
 			this.buttonNew.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("control N"), "openWizardSelection");
 		
 			this.buttonSave = new WebButton(Icons.get("save"));
@@ -80,8 +97,39 @@ public class FMCSToolBar extends WebMenuBar {
 			this.add(this.buttonSaveAll);
 			this.setToolbarStyle(ToolbarStyle.attached);
 		}
+		
+		/**
+		 * 
+		 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+		 * @version 0.1.0
+		 * @since 0.1.0
+		 */
+		private class Adapter extends AbstractAdapter<ToolBarNewAndSave> {
+
+			public Adapter(ToolBarNewAndSave motherClassInstance) {
+				
+				super(motherClassInstance);
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				
+				Object source = event.getSource();
+				
+				if(source == this.getMotherClassInstance().buttonNew) {
+					
+					new DialogWizardSelection(new WizardNewProject());
+				}
+			}
+		}
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class ToolBarImportExport extends WebToolBar {
 
 		private static final long serialVersionUID = 6560491870769911590L;
@@ -101,6 +149,12 @@ public class FMCSToolBar extends WebMenuBar {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class ToolBarUndoRedo extends WebToolBar {
 
 		private static final long serialVersionUID = -4162406422469577069L;
@@ -120,6 +174,12 @@ public class FMCSToolBar extends WebMenuBar {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class ToolBarEdit extends WebToolBar {
 
 		private static final long serialVersionUID = 3704616688789406228L;
@@ -147,6 +207,12 @@ public class FMCSToolBar extends WebMenuBar {
 		}
 	}
 	
+	/**
+	 * 
+	 * @author Ralph Niemitz(RalleYTN)/ralph.niemitz@gmx.de
+	 * @version 0.1.0
+	 * @since 0.1.0
+	 */
 	public class ToolBarQuickSearch extends WebToolBar {
 
 		private static final long serialVersionUID = -6529794681284872056L;
